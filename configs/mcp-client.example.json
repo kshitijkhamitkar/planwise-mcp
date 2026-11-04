@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "planwise": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "--env-file=/absolute/path/to/planwise-mcp/.env",
+        "/absolute/path/to/planwise-mcp/src/index.ts"
+      ],
+      "env": {
+        "MONGODB_URI": "mongodb://127.0.0.1:27017/planwise",
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

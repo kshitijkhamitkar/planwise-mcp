@@ -1,0 +1,20 @@
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - planwise_mongo:/data/db
+
+  # MCP over stdio is usually run on the host.
+  # This service is optional for a smoke-check container build later.
+  # planwise-mcp:
+  #   build: .
+  #   environment:
+  #     MONGODB_URI: mongodb://mongo:27017/planwise
+  #     MCP_TRANSPORT: stdio
+  #   depends_on:
+  #     - mongo
+
+volumes:
+  planwise_mongo:
