@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "planwise-local": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "--env-file=D:/mcp server project/.env",
+        "D:/mcp server project/src/index.ts"
+      ],
+      "env": {
+        "MONGODB_URI": "mongodb://127.0.0.1:27017/planwise",
+        "MCP_TRANSPORT": "stdio"
+      }
+    },
+    "planwise-remote": {
+  "url": "https://planwise-mcp-production.up.railway.app/mcp",
+  "headers": {
+    "Authorization": "Bearer long random secret"
+  }
+}
+  }
+}

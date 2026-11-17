@@ -38,8 +38,16 @@ npm run smoke
 | `MCP_TRANSPORT` | `http` |
 | `HOST` | `0.0.0.0` |
 | `PORT` | `3000` (or platform default) |
-| `API_KEY` | long random secret |
-| `ALLOW_INSECURE_HTTP` | `false` |
+| `MCP_AUTH_MODE` | `none` for ChatGPT “No authentication” (demo) |
+| `API_KEY` | only needed if `MCP_AUTH_MODE=api_key` |
+
+For ChatGPT custom MCP with **No authentication**, use:
+
+```text
+MCP_AUTH_MODE=none
+```
+
+(Your tools are read-only over synthetic data; still don’t put real secrets in Mongo.)
 
 Do **not** commit real secrets. Set them in Railway/Render/Fly dashboard.
 

@@ -21,15 +21,16 @@ export function extractApiKey(req: Request): string | undefined {
 
 /** Protect /mcp in HTTP mode. */
 export function requireApiKey(req: Request, res: Response, next: NextFunction): void {
-  const { API_KEY, ALLOW_INSECURE_HTTP } = loadEnv();
+  const { MCP_AUTH_MODE, API_KEY } = loadEnv();
+
+  if (MCP_AUTH_MODE === "none") {
+    next();
+    return;
+  }
 
   if (!API_KEY) {
-    if (ALLOW_INSECURE_HTTP) {
-      next();
-      return;
-    }
     res.status(500).json({
-      error: "Server misconfigured: API_KEY is required for HTTP mode",
+      error: "Server misconfigured: API_KEY is required when MCP_AUTH_MODE=api_key",
     });
     return;
   }
