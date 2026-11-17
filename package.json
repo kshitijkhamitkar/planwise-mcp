@@ -7,8 +7,10 @@
   "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsx --env-file=.env src/index.ts",
+    "dev:http": "tsx --env-file=.env src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "start": "node --env-file=.env dist/src/index.js",
+    "start": "node dist/src/index.js",
+    "start:env": "node --env-file=.env dist/src/index.js",
     "seed": "tsx --env-file=.env scripts/seedDatabase.ts",
     "smoke": "tsx --env-file=.env scripts/smokeTools.ts",
     "test": "vitest run",
@@ -19,10 +21,12 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",
+    "express": "^5.1.0",
     "mongoose": "^8.16.0",
     "zod": "^3.25.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
     "@types/node": "^22.15.0",
     "tsx": "^4.20.0",
     "typescript": "^5.8.0",

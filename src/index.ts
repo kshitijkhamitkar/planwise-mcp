@@ -1,5 +1,6 @@
 import { connectDatabase } from "./config/database.js";
 import { startStdioServer } from "./mcp/server.js";
+import { startHttpServer } from "./mcp/httpServer.js";
 import { getTransportMode } from "./mcp/transport.js";
 
 async function main() {
@@ -9,11 +10,9 @@ async function main() {
   await connectDatabase();
   console.error("[planwise-mcp] MongoDB connected");
 
-  if (transport !== "stdio") {
-    console.error(
-      "[planwise-mcp] Only stdio is implemented in MVP. Set MCP_TRANSPORT=stdio.",
-    );
-    process.exit(1);
+  if (transport === "http") {
+    await startHttpServer();
+    return;
   }
 
   await startStdioServer();

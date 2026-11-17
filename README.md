@@ -14,7 +14,8 @@ Connect PlanWise to any MCP-compatible client, then ask natural-language questio
 - **Demand planning** with weighted moving average forecasting (TypeScript)
 - **Synthetic dataset**: ~30 products, 100 customers, 12 months of sales, inventory + movements
 - **Docker Compose** for local MongoDB
-- **stdio transport** for local demos (no cloud hosting required)
+- **Dual transport:** `stdio` for local demos, **Streamable HTTP** (`/mcp`) for hosted ChatGPT connectors
+- **API key auth** in HTTP mode (`Authorization: Bearer` or `X-API-Key`)
 
 ## Tech stack
 
@@ -90,48 +91,42 @@ npm run smoke
 npm test
 ```
 
-### 5. Run the MCP server
+### 5. Run the MCP server (local stdio)
 
 ```bash
+# .env → MCP_TRANSPORT=stdio
 npm run dev
 ```
 
-## Connect an MCP client
+## Connect a local MCP client (stdio)
 
-Add a stdio MCP server entry that runs this project. Example:
+Add a stdio MCP server entry that runs this project. Example: [`configs/mcp-client.example.json`](configs/mcp-client.example.json)
 
-```json
-{
-  "mcpServers": {
-    "planwise": {
-      "command": "npx",
-      "args": [
-        "tsx",
-        "--env-file=/absolute/path/to/planwise-mcp/.env",
-        "/absolute/path/to/planwise-mcp/src/index.ts"
-      ],
-      "env": {
-        "MONGODB_URI": "mongodb://127.0.0.1:27017/planwise",
-        "MCP_TRANSPORT": "stdio"
-      }
-    }
-  }
-}
-```
-
-Update the absolute paths for your machine. Keep Docker/Mongo running, then try prompts such as:
+Keep Docker/Mongo running, then try:
 
 - “Which products are at stockout risk in the next 14 days?”
 - “Recommend replenishment for P-014 for 30 days.”
 - “Summarize sales for October 2026.”
-
-More examples: [`configs/`](configs/)
 
 ### MCP Inspector
 
 ```bash
 npx @modelcontextprotocol/inspector npx tsx --env-file=.env src/index.ts
 ```
+
+## Deploy for ChatGPT (HTTP)
+
+See **[`docs/DEPLOY.md`](docs/DEPLOY.md)** for Atlas + Railway/Render + ChatGPT connector steps.
+
+Summary:
+
+| Mode | Env |
+|------|-----|
+| Local | `MCP_TRANSPORT=stdio` |
+| Hosted | `MCP_TRANSPORT=http`, `API_KEY=...`, Atlas `MONGODB_URI` |
+
+Hosted MCP URL: `https://<your-host>/mcp`  
+Auth: `Authorization: Bearer <API_KEY>`
 
 ## Project structure
 
@@ -162,7 +157,9 @@ planwise-mcp/
 |---------|-------------|
 | `npm run seed` | Seed MongoDB |
 | `npm run smoke` | Call all 5 tools via services |
-| `npm run dev` | Start MCP server (stdio) |
+| `npm run dev` | Start MCP server (uses `.env`, usually stdio) |
+| `npm start` | Production start (`dist/`, uses process env) |
+| `npm run start:env` | Production start with local `.env` |
 | `npm test` | Run Vitest unit tests |
 | `npm run build` | Compile TypeScript |
 
